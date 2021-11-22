@@ -1,25 +1,31 @@
 add_user()
 {
+    return 0
 }
 
 add_group()
 {
+    return 0
 }
 
 remove_user()
 {
+    return 0
 }
 
 remove_group()
 {
+    return 0
 }
 
 update_user()
 {
+    return 0
 }
 
 update_group()
 {
+    return 0
 }
 
 # Parte principal do código
