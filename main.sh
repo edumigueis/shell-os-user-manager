@@ -82,6 +82,71 @@ update_owner_group()
     return 0
 }
 
+update_file_dir_permissions()
+{
+
+    case $PERM_TARGET_OPTION in
+        1)
+            case $PERM_TARGET_OPTION in
+                1) 
+                    sudo chmod u-rwx $ARQ_NAME
+                    if ["$?" -ne "0"]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                2)
+                    sudo chmod u+w $ARQ_NAME
+                    if ["$?" -ne "0"]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                3)
+                    sudo chmod u+r $ARQ_NAME
+                    if ["$?" -ne "0"]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                4)
+                    sudo chmod u+x $ARQ_NAME
+                    if ["$?" -ne "0"]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                *)
+                    echo "Erro ao alterar permissiões. Código de permissões inválido"
+                    return 1
+            esac
+
+            return 0
+            ;;
+        2) 
+            TARGET = "g"
+            ;;
+        3)
+            TARGET = "o"
+            ;;
+        *) 
+            echo "Opção inválida"
+            ;;
+    esac
+
+    if ["$?" -ne "0"]; 
+    then
+        echo "Falha ao alterar '$ARQ_NAME'"
+        return 1
+    fi
+
+    return 0
+}
+
 # Parte principal do código
 
 echo " ****************************** "
@@ -199,52 +264,25 @@ case $OPTION in
         echo "2. Escrita"
         echo "3. Leitura"
         echo "4. Execução"
-        read -p "" PERM_TYPE_OPTION
+        read -p "Insira o código da permissão: " PERM_TYPE_OPTION
         
         echo "Deseja alterar as permissões do:"
         echo "1. Dono do arquivo"
         echo "2. Grupo do arquivo"
         echo "3. Outros"
-        read -p "" PERM_TARGET_OPTION
+        read -p "Insira o código do alvo: " PERM_TARGET_OPTION
         
-        case $PERM_TARGET_OPTION in
-            1) 
-                #function
-                RETURN_CODE=$?
-                
-                if [$RETURN_CODE -eq 0]; 
-                then
-                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
-                else
-                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
-                fi
-                ;;
-            2) 
-                #function
-                RETURN_CODE=$?
-                
-                if [$RETURN_CODE -eq 0]; 
-                then
-                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
-                else
-                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
-                fi
-                ;;
-            3)
-                #function
-                RETURN_CODE=$?
-                
-                if [$RETURN_CODE -eq 0]; 
-                then
-                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
-                else
-                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
-                fi
-                ;;
-            *) 
-                echo "Opção inválida"
-                ;;
+        update_file_dir_permissions
+        RETURN_CODE=$?
+        
+        if ["$RETURN_CODE" -eq 0]; 
+        then
+            echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
+        else
+            echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
+        fi
         ;;
+
     *)
         echo "Opção inválida"
         ;;
