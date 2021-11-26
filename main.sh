@@ -2,9 +2,9 @@ add_user()
 {
     sudo adduser $USER
 
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
-        echo "Falha ao adicionar usuário"
+        echo "Falha ao adicionar um usuário '$USER'"
         return 1
     fi
     
@@ -23,9 +23,9 @@ add_group()
 {
     sudo addgroup $GROUP
 
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
-        echo "Falha ao adicionar grupo '$GROUP'"
+        echo "Falha ao adicionar um novo grupo '$GROUP'"
         return 1
     fi
 
@@ -36,7 +36,7 @@ remove_user()
 {
     sudo userdel $USER
 
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
         echo "Falha ao remover '$USER'"
         return 1
@@ -49,7 +49,7 @@ remove_group()
 {
     sudo groupdel $GROUP
 
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
         echo "Falha ao remover '$GROUP'"
         return 1
@@ -61,7 +61,7 @@ remove_group()
 update_owner()
 {
     sudo chown $USER $ARQ_NAME
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
         echo "Falha ao alterar '$ARQ_NAME'"
         return 1
@@ -73,7 +73,7 @@ update_owner()
 update_owner_group()
 {
     sudo chgrp $GROUP $ARQ_NAME
-    if [ "$?" -ne "0" ]; 
+    if ["$?" -ne "0"]; 
     then
         echo "Falha ao alterar '$ARQ_NAME'"
         return 1
@@ -84,26 +84,28 @@ update_owner_group()
 
 # Parte principal do código
 
-echo " ------------ Menu ------------ "
-echo "1 - Adicionar novo usuário"
-echo "2 - Adicionar novo grupo"
-echo "3 - Remover usuário"
-echo "4 - Remover grupo"
-echo "5 - Modificar o dono de um arquivo ou diretório"
-echo "6 - Modificar o grupo dono de um arquivo ou diretório"
+echo " ****************************** "
+echo "              Menu              "
+echo " ****************************** "
+echo "1. Adicionar novo usuário"
+echo "2. Adicionar novo grupo"
+echo "3. Remover usuário"
+echo "4. Remover grupo"
+echo "5. Modificar o dono de um arquivo ou diretório"
+echo "6. Modificar o grupo de um arquivo ou diretório"
 
-read -p "Escolha a opção: " OPTION
+read -p "Escolha uma das opção: " OPTION
 
 case $OPTION in
     1)
         read -p "Insira um nome do usuário: " USER
         
-        echo "Adicionando '$USER' ..."
+        echo "Adicionando novo usuário '$USER'..."
 
         add_user
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Usuário '$USER' adicionado com sucesso!"
         else
             echo "Erro ao adicionar usuário '$USER'"
@@ -118,7 +120,7 @@ case $OPTION in
         add_group
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Grupo '$GROUP' adicionado com sucesso!"
         else
             echo "Erro ao adicionar grupo '$GROUP'"
@@ -132,7 +134,7 @@ case $OPTION in
         remove_user
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Usuário '$USER' removido com sucesso!"
         else
             echo "Erro ao remover usuário '$USER'"
@@ -146,7 +148,7 @@ case $OPTION in
         remove_group
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Grupo '$GROUP' removido com sucesso!"
         else
             echo "Erro ao remover grupo '$GROUP'"
@@ -161,7 +163,7 @@ case $OPTION in
         update_owner
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
             echo "Erro ao alterar arquivo '$ARQ_NAME'"
@@ -176,7 +178,7 @@ case $OPTION in
         update_owner_group
         RETURN_CODE=$?
 
-        if [ $RETURN_CODE -eq 0 ]; then
+        if [$RETURN_CODE -eq 0]; then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
             echo "Erro ao alterar arquivo '$ARQ_NAME'"
