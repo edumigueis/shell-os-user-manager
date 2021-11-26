@@ -93,6 +93,7 @@ echo "3. Remover usuário"
 echo "4. Remover grupo"
 echo "5. Modificar o dono de um arquivo ou diretório"
 echo "6. Modificar o grupo de um arquivo ou diretório"
+echo "7. Alterar permissões de um arquivo ou diretório"
 
 read -p "Escolha uma das opção: " OPTION
 
@@ -105,7 +106,8 @@ case $OPTION in
         add_user
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Usuário '$USER' adicionado com sucesso!"
         else
             echo "Erro ao adicionar usuário '$USER'"
@@ -120,7 +122,8 @@ case $OPTION in
         add_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Grupo '$GROUP' adicionado com sucesso!"
         else
             echo "Erro ao adicionar grupo '$GROUP'"
@@ -134,7 +137,8 @@ case $OPTION in
         remove_user
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Usuário '$USER' removido com sucesso!"
         else
             echo "Erro ao remover usuário '$USER'"
@@ -148,7 +152,8 @@ case $OPTION in
         remove_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Grupo '$GROUP' removido com sucesso!"
         else
             echo "Erro ao remover grupo '$GROUP'"
@@ -163,7 +168,8 @@ case $OPTION in
         update_owner
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
             echo "Erro ao alterar arquivo '$ARQ_NAME'"
@@ -178,11 +184,66 @@ case $OPTION in
         update_owner_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; then
+        if [$RETURN_CODE -eq 0]; 
+        then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
             echo "Erro ao alterar arquivo '$ARQ_NAME'"
         fi
+        ;;
+    7)
+        read -p "Insira o nome do arquivo: " ARQ_NAME
+        
+        echo "Deseja alterar a permissão para: "
+        echo "1. Nenhuma"
+        echo "2. Escrita"
+        echo "3. Leitura"
+        echo "4. Execução"
+        read -p "" PERM_TYPE_OPTION
+        
+        echo "Deseja alterar as permissões do:"
+        echo "1. Dono do arquivo"
+        echo "2. Grupo do arquivo"
+        echo "3. Outros"
+        read -p "" PERM_TARGET_OPTION
+        
+        case $PERM_TARGET_OPTION in
+            1) 
+                #function
+                RETURN_CODE=$?
+                
+                if [$RETURN_CODE -eq 0]; 
+                then
+                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
+                else
+                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
+                fi
+                ;;
+            2) 
+                #function
+                RETURN_CODE=$?
+                
+                if [$RETURN_CODE -eq 0]; 
+                then
+                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
+                else
+                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
+                fi
+                ;;
+            3)
+                #function
+                RETURN_CODE=$?
+                
+                if [$RETURN_CODE -eq 0]; 
+                then
+                    echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
+                else
+                    echo "Erro ao alterar permissões do arquivo '$ARQ_NAME'"
+                fi
+                ;;
+            *) 
+                echo "Opção inválida"
+                ;;
         ;;
     *)
         echo "Opção inválida"
