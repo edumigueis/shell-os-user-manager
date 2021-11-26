@@ -2,19 +2,11 @@ add_user()
 {
     sudo adduser $USER
 
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao adicionar um usuário '$USER'"
         return 1
     fi
-    
-    # sudo passwd $USER
-
-    # if [ "$?" -ne "0" ]; 
-    # then
-    #     echo "Falha ao adicionar senha"
-    #     return 1
-    # fi
 
     return 0
 }
@@ -23,7 +15,7 @@ add_group()
 {
     sudo addgroup $GROUP
 
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao adicionar um novo grupo '$GROUP'"
         return 1
@@ -36,7 +28,7 @@ remove_user()
 {
     sudo userdel $USER
 
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao remover '$USER'"
         return 1
@@ -49,7 +41,7 @@ remove_group()
 {
     sudo groupdel $GROUP
 
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao remover '$GROUP'"
         return 1
@@ -61,7 +53,7 @@ remove_group()
 update_owner()
 {
     sudo chown $USER $ARQ_NAME
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao alterar '$ARQ_NAME'"
         return 1
@@ -73,7 +65,7 @@ update_owner()
 update_owner_group()
 {
     sudo chgrp $GROUP $ARQ_NAME
-    if ["$?" -ne "0"]; 
+    if [ "$?" -ne "0" ]; 
     then
         echo "Falha ao alterar '$ARQ_NAME'"
         return 1
@@ -87,34 +79,34 @@ update_file_dir_permissions()
 
     case $PERM_TARGET_OPTION in
         1)
-            case $PERM_TARGET_OPTION in
+            case $PERM_TYPE_OPTION in
                 1) 
-                    sudo chmod u-rwx $ARQ_NAME
-                    if ["$?" -ne "0"]; 
+                    chmod u-rwx $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
                     then
                         echo "Erro ao alterar permissiões. Código de permissões inválido"
                         return 1
                     fi
                     ;;
                 2)
-                    sudo chmod u+w $ARQ_NAME
-                    if ["$?" -ne "0"]; 
+                    chmod u+w $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
                     then
                         echo "Erro ao alterar permissiões. Código de permissões inválido"
                         return 1
                     fi
                     ;;
                 3)
-                    sudo chmod u+r $ARQ_NAME
-                    if ["$?" -ne "0"]; 
+                    chmod u+r $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
                     then
                         echo "Erro ao alterar permissiões. Código de permissões inválido"
                         return 1
                     fi
                     ;;
                 4)
-                    sudo chmod u+x $ARQ_NAME
-                    if ["$?" -ne "0"]; 
+                    chmod u+x $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
                     then
                         echo "Erro ao alterar permissiões. Código de permissões inválido"
                         return 1
@@ -128,13 +120,90 @@ update_file_dir_permissions()
             return 0
             ;;
         2) 
-            TARGET = "g"
+            case $PERM_TYPE_OPTION in
+                1) 
+                    chmod g-rwx $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                2)
+                    chmod g+w $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                3)
+                    chmod g+r $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                4)
+                    chmod g+x $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                *)
+                    echo "Erro ao alterar permissiões. Código de permissões inválido"
+                    return 1
+            esac
+
+            return 0
             ;;
         3)
-            TARGET = "o"
+            case $PERM_TYPE_OPTION in
+                1) 
+                    chmod o-rwx $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                2)
+                    chmod o+w $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                3)
+                    chmod o+r $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                4)
+                    chmod o+x $ARQ_NAME
+                    if [ "$?" -ne "0" ]; 
+                    then
+                        echo "Erro ao alterar permissiões. Código de permissões inválido"
+                        return 1
+                    fi
+                    ;;
+                *)
+                    echo "Erro ao alterar permissiões. Código de permissões inválido"
+                    return 1
+            esac
+
+            return 0
             ;;
         *) 
-            echo "Opção inválida"
+            echo "Erro ao alterar permissiões. Código de alvo inválido"
+            return 1
             ;;
     esac
 
@@ -171,7 +240,7 @@ case $OPTION in
         add_user
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Usuário '$USER' adicionado com sucesso!"
         else
@@ -187,7 +256,7 @@ case $OPTION in
         add_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Grupo '$GROUP' adicionado com sucesso!"
         else
@@ -202,7 +271,7 @@ case $OPTION in
         remove_user
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Usuário '$USER' removido com sucesso!"
         else
@@ -217,7 +286,7 @@ case $OPTION in
         remove_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Grupo '$GROUP' removido com sucesso!"
         else
@@ -233,7 +302,7 @@ case $OPTION in
         update_owner
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
@@ -249,7 +318,7 @@ case $OPTION in
         update_owner_group
         RETURN_CODE=$?
 
-        if [$RETURN_CODE -eq 0]; 
+        if [ $RETURN_CODE -eq 0 ]; 
         then
             echo "Arquivo '$ARQ_NAME' alterado com sucesso!"
         else
@@ -275,7 +344,7 @@ case $OPTION in
         update_file_dir_permissions
         RETURN_CODE=$?
         
-        if ["$RETURN_CODE" -eq 0]; 
+        if [ "$RETURN_CODE" -eq 0 ]; 
         then
             echo "Permissões do arquivo '$ARQ_NAME' alteradas com sucesso!"
         else
